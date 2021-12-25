@@ -7,8 +7,11 @@ Port = 567
 
 [FEEDS]
 WebsiteURLs = ./websites.csv
+LastNDays = 7
 
 [NEWSLETTER]
 IncludeDebugLog = yes
 
-
+[MISC_SITEMAP]
+IgnoreIfInURL = /author/
+IgnoreRootURL = yes
