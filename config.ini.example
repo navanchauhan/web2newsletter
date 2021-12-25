@@ -1,0 +1,14 @@
+[SMTP_EMAIL]
+User = john
+Password = jdoe123
+Email = john@example.com
+Server = example.com
+Port = 567
+
+[FEEDS]
+WebsiteURLs = ./websites.csv
+
+[NEWSLETTER]
+IncludeDebugLog = yes
+
+
