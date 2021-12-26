@@ -10,7 +10,8 @@ import html2text
 from usp.tree import sitemap_tree_for_homepage
 from urllib.parse import urlparse
 from tqdm import tqdm
-from readability import Document
+#from readability import Document
+from newspaper import Article
 
 logging.getLogger("usp.fetch_parse").setLevel(logging.FATAL)
 logging.getLogger("usp.helpers").setLevel(logging.FATAL)
@@ -37,23 +38,25 @@ class WebPostSource:
 	def get_sorted_posts(self):
 		return sorted(self.web_posts, key = lambda x: time.mktime(x.date), reverse=True)
 
-def get_content(link,config,website: WebPostSource):
+def get_content(link,config,website: WebPostSource, debug: bool = False):
 	res = requests.head(link)
 	"""TODO
 	Custom Exceptions
 	"""
 	content_type = res.headers["Content-Type"]
-	if "application/rss+xml" in content_type:
+	if debug:
+		print(res.headers)
+	if ("application/rss+xml" in content_type) or ("application/xml" in content_type):
 		feed = feedparser.parse(link)
 		t1 = time.time()
-		for entry in feed["entries"]:
+		for entry in tqdm(feed["entries"]):
 			t2 = time.mktime(entry.updated_parsed)
 			if datetime.timedelta(seconds=t1-t2).days > int(config["FEEDS"]["LastNDays"]):
 				continue
 			else:
 				post = WebPost(entry.title,entry.link,entry.updated_parsed,entry.summary)
 				website.add_post(post)
-	else:
+	elif "text/html" in content_type:
 		t1 = time.time()
 		tree = sitemap_tree_for_homepage(link)
 		posts_to_search = {}
@@ -73,11 +76,16 @@ def get_content(link,config,website: WebPostSource):
 			h = html2text.HTML2Text()
 			h.ignore_links = True
 			for url in posts_to_search:
-				res = requests.get(url)
-				doc = Document(res.text)
-				doc_text = html2text.html2text(doc.summary())
-				post = WebPost(doc.title(),url,posts_to_search[url].timetuple(),doc_text,"markdown")
+				#res = requests.get(url)
+				#doc = Document(res.text)
+				#doc_text = html2text.html2text(doc.summary())
+				article = Article(url)
+				article.download()
+				article.parse()
+				article.nlp()
+				post = WebPost(article.title,url,posts_to_search[url].timetuple(),article.summary)
 				website.add_post(post)
-
+	else:
+		print("Not Supported")
 
 
