@@ -75,7 +75,7 @@ def get_content(link,config,website: WebPostSource, debug: bool = False):
 		if posts_to_search != {}:
 			h = html2text.HTML2Text()
 			h.ignore_links = True
-			for url in posts_to_search:
+			for url in tqdm(posts_to_search):
 				#res = requests.get(url)
 				#doc = Document(res.text)
 				#doc_text = html2text.html2text(doc.summary())
