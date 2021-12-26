@@ -11,6 +11,9 @@ LastNDays = 7
 
 [NEWSLETTER]
 IncludeDebugLog = yes
+Title = My Newsletter
+Theme = basic.html
+SendTo = bob@alice.com alice@bob.com
 
 [MISC_SITEMAP]
 IgnoreIfInURL = /author/
