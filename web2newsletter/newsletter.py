@@ -63,12 +63,12 @@ def generate(file_path: str, email: bool = False, return_html: bool = True, debu
 		for row in reader:
 			csv_input.append(row)
 			
-			for feed_title,link in csv_input[1:]:
-				feed = WebPostSource(feed_title)
-				if debug:
-					print(f"Getting pages for {feed_title}")
-				get_content(link,config,feed,debug)
-				sources.append(feed)
+	for feed_title,link in csv_input[1:]:
+		feed = WebPostSource(feed_title)
+		if debug:
+			print(f"Getting pages for {feed_title}")
+		get_content(link,config,feed,debug)
+		sources.append(feed)
 	"""
 	for source in sources:
 		for post in source.get_sorted_posts():

@@ -52,7 +52,7 @@ def get_content(link,config,website: WebPostSource, debug: bool = False):
 	content_type = res.headers["Content-Type"]
 	if debug:
 		print(res.headers)
-	if ("application/rss+xml" in content_type) or ("application/xml" in content_type):
+	if ("application/rss+xml" in content_type) or ("application/xml" in content_type) or ("application/atom+xml" in content_type):
 		feed = feedparser.parse(link)
 		t1 = time.time()
 		for entry in tqdm(feed["entries"]):
