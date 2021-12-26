@@ -6,3 +6,4 @@ newspaper3k
 typer
 ultimate-sitemap-parser
 Jinja2
+numpy
