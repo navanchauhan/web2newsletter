@@ -17,6 +17,12 @@ logging.getLogger("usp.fetch_parse").setLevel(logging.FATAL)
 logging.getLogger("usp.helpers").setLevel(logging.FATAL)
 logging.getLogger("usp.tree").setLevel(logging.FATAL)
 
+feedparser.USER_AGENT = "curl/7.37.0"
+
+headers = {
+    'User-Agent': 'curl/7.37.0' # Just so we are not served the cached version by Sucuri/Cloudproxy
+}
+
 class WebPost:
 	def __init__(self, title, url, date, content, content_type: str = "plain"):
 		self.title = title
@@ -39,7 +45,7 @@ class WebPostSource:
 		return sorted(self.web_posts, key = lambda x: time.mktime(x.date), reverse=True)
 
 def get_content(link,config,website: WebPostSource, debug: bool = False):
-	res = requests.head(link)
+	res = requests.head(link,headers=headers)
 	"""TODO
 	Custom Exceptions
 	"""
