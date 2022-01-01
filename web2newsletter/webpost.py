@@ -92,6 +92,6 @@ def get_content(link,config,website: WebPostSource, debug: bool = False):
 				post = WebPost(article.title,url,posts_to_search[url].timetuple(),article.summary)
 				website.add_post(post)
 	else:
-		print(f"{link} is not supported: {res.headers["Content-Type"]}")
+		print(f"{link} is not supported: {res.headers['Content-Type']}")
 
 
