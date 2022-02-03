@@ -87,7 +87,11 @@ def get_content(link,config,website: WebPostSource, debug: bool = False):
 				#doc_text = html2text.html2text(doc.summary())
 				article = Article(url)
 				article.download()
-				article.parse()
+				try:
+					article.parse()
+				except:
+					print(url)
+					continue
 				article.nlp()
 				post = WebPost(article.title,url,posts_to_search[url].timetuple(),article.summary)
 				website.add_post(post)
